@@ -113,7 +113,7 @@ export const HomePage: React.FC = () => {
         <div className={styles.aboutText}>
           <SectionHeading eyebrow="L'association" title="Qui sommes-nous ?" />
           <p className={styles.aboutLead}>
-            Une Rose Un Espoir est une association loi 1901 basée à Algrange, dédiée à la lutte contre le cancer du sein.
+            Une Rose Un Espoir est une association loi 1901 basée à Algrange, dédiée à la lutte contre le cancer.
             Nous soutenons les patients, leurs familles, et participons activement aux campagnes de sensibilisation et de
             collecte de fonds pour la recherche.
           </p>
