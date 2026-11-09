@@ -14,6 +14,7 @@ import EventsPage from "../pages/EventsPage/EventsPage";
 import EventDetailPage from "../pages/EventDetailPage/EventDetailPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
 import DonationPage from "../pages/DonationPage/DonationPage";
+import MecenesPage from "../pages/MecenesPage/MecenesPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
@@ -27,6 +28,7 @@ import PostsAdminPage from "../pages/PostsAdminPage/PostsAdminPage";
 import EventsAdminPage from "../pages/EventsAdminPage/EventsAdminPage";
 import FeatureRequestsPage from "../pages/FeatureRequestsPage/FeatureRequestsPage";
 import CarouselAdminPage from "../pages/CarouselAdminPage/CarouselAdminPage";
+import MecenesAdminPage from "../pages/MecenesAdminPage/MecenesAdminPage";
 import GalleryAdminPage from "../pages/GalleryAdminPage/GalleryAdminPage";
 import ConfigurationPage from "../pages/ConfigurationPage/ConfigurationPage";
 import FeatureFlagsPage from "../pages/FeatureFlagsPage/FeatureFlagsPage";
@@ -70,6 +72,7 @@ export const router = createBrowserRouter(
         { path: "evenements/:eventId", element: <EventDetailPage /> },
         route("contact", <ContactPage />),
         route("donation", <DonationPage />),
+        route("mecenes", <MecenesPage />),
         { path: "connexion", element: <LoginPage /> },
         route("register", <RegisterPage />),
         route("account", <AccountLayout />, null, [
@@ -86,6 +89,7 @@ export const router = createBrowserRouter(
           route("adminEvents", <EventsAdminPage />, "administration"),
           route("adminPosts", <PostsAdminPage />, "administration"),
           route("adminCarousel", <CarouselAdminPage />, "administration"),
+          route("adminMecenes", <MecenesAdminPage />, "administration"),
           route("adminMedias", <GalleryAdminPage />, "administration"),
           route("adminConfiguration", <ConfigurationPage />, "administration"),
           route("adminFeatureFlags", <FeatureFlagsPage />, "administration"),

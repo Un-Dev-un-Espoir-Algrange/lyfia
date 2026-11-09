@@ -10,12 +10,13 @@ import GalleryPickerDialog from "./GalleryPickerDialog";
 import styles from "./ImagePicker.module.css";
 
 /** Où l'image apparaîtra : son cadrage dans l'aperçu, et le format conseillé. */
-export type ImageFormat = "banniere" | "carrousel" | "evenement";
+export type ImageFormat = "banniere" | "carrousel" | "evenement" | "logo";
 
 const ADVICE: Record<ImageFormat, string> = {
   banniere: "Bannière d'actualité : idéalement 16:9, 1600 px de large.",
   carrousel: "Diapositive du carrousel : idéalement 16:9, 1920 px de large.",
   evenement: "En-tête d'événement : idéalement 16:9, 1600 px de large.",
+  logo: "Logo : de préférence sur fond blanc ou transparent (PNG), 600 px de large.",
 };
 
 export interface ImagePickerProps {
@@ -29,6 +30,8 @@ export interface ImagePickerProps {
   /** Pour l'image d'un Event : ses photos d'abord, et l'Année d'une image versée à la Galerie. */
   event?: { eventId: string; startDateTime: string } | null;
   disabled?: boolean;
+  /** Proposer aussi la Galerie (y choisir l'image, ou l'y verser) ; pas pour un logo, qui n'en est pas une photo. */
+  galerie?: boolean;
 }
 
 /**
@@ -36,7 +39,7 @@ export interface ImagePickerProps {
  * apparaîtra, et trois gestes, déposer une image sur place (et, si l'on veut, la verser aussi à la Galerie, Publique),
  * la choisir parmi les photos Publiques de la Galerie, ou la retirer. L'image choisie n'est pas copiée.
  */
-export const ImagePicker: React.FC<ImagePickerProps> = ({ label, value, onChange, format, sectorId, event, disabled = false }) => {
+export const ImagePicker: React.FC<ImagePickerProps> = ({ label, value, onChange, format, sectorId, event, disabled = false, galerie = true }) => {
   const inputId = useId();
   const fileInput = useRef<HTMLInputElement>(null);
   const [toGalerie, setToGalerie] = useState(false);
@@ -52,7 +55,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({ label, value, onChange
     setError(null);
     setBusy(true);
     try {
-      if (toGalerie && limites && sectorId) {
+      if (galerie && toGalerie && limites && sectorId) {
         // Versée à la Galerie : de l'Année en cours, ou de l'Event, et Publique d'emblée puisqu'elle sert au site public
         const photo = await deposit.mutateAsync({
           photo: await preparePhoto(file, limites),
@@ -101,14 +104,16 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({ label, value, onChange
             <Button type="button" variant="outline" label={busy ? "Envoi…" : "Déposer une image"} disabled={disabled || busy} onClick={() => fileInput.current?.click()} />
           </>
         )}
-        <Button type="button" variant="outline" label="Choisir dans la Galerie" disabled={disabled || busy} onClick={() => setPicking(true)} />
+        {galerie && (
+          <Button type="button" variant="outline" label="Choisir dans la Galerie" disabled={disabled || busy} onClick={() => setPicking(true)} />
+        )}
         {value && <Button type="button" variant="ghost" label="Retirer" disabled={disabled || busy} onClick={() => onChange(null)} />}
       </div>
-      {depositOn && sectorId && (
+      {galerie && depositOn && sectorId && (
         <Checkbox label="L'ajouter aussi à la Galerie (Publique)" checked={toGalerie} onChange={setToGalerie} disabled={disabled || busy} />
       )}
       {error && <p className={styles.error}>{error}</p>}
-      <GalleryPickerDialog isOpen={picking} onClose={() => setPicking(false)} onPick={onChange} sectorId={sectorId} event={event} />
+      <GalleryPickerDialog isOpen={galerie && picking} onClose={() => setPicking(false)} onPick={onChange} sectorId={sectorId} event={event} />
     </div>
   );
 };

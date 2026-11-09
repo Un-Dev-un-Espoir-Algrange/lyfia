@@ -44,6 +44,7 @@ export const ACCESS = {
   contact: { path: "/contact", label: "Contact", minRole: "visiteur", section: "main", menu: "Association" },
   events: { path: "/evenements", label: "Événements", minRole: "visiteur", section: "main" },
   donation: { path: "/don", label: "Faire un don", minRole: "visiteur", section: "main", menu: "Soutenir" },
+  mecenes: { path: "/mecenes", label: "Nos mécènes", minRole: "visiteur", section: "main", menu: "Soutenir", feature: "mecenes" },
   volunteer: {
     path: "/#benevolat",
     label: "Devenir bénévole",
@@ -75,6 +76,7 @@ export const ACCESS = {
   adminEvents: { path: "/administration/evenements", label: "Gestion événements", minRole: "bureau", section: "admin", group: "Organisation" },
   adminPosts: { path: "/administration/actualites", label: "Actualités", minRole: "bureau", section: "admin", group: "Contenu" },
   adminCarousel: { path: "/administration/carrousel", label: "Carrousel", minRole: "bureau", section: "admin", group: "Contenu" },
+  adminMecenes: { path: "/administration/mecenes", label: "Mécènes", minRole: "bureau", section: "admin", group: "Contenu" },
   adminMedias: { path: "/administration/galerie", label: "Galerie", minRole: "bureau", section: "admin", group: "Contenu" },
   adminConfiguration: { path: "/administration/configuration", label: "Configuration", minRole: "super_admin", section: "admin", group: "Site" },
   adminFeatureFlags: { path: "/administration/fonctionnalites", label: "Fonctionnalités", minRole: "super_admin", section: "admin", group: "Site" },

@@ -34,6 +34,7 @@ export const queryKeys = {
     aValider: (sectorId?: string) => ["galerie", "a-valider", sectorId] as const,
   },
   carousel: { all: ["carousel-items"] as const, active: ["carousel-items", "active"] as const },
+  mecenes: { all: ["mecenes"] as const, public: ["mecenes", "public"] as const, managed: ["mecenes", "managed"] as const },
   configurations: { all: ["configurations"] as const },
   featureFlags: { all: ["feature-flags"] as const, journal: ["feature-flags", "journal"] as const },
   featureRequests: { all: ["feature-requests"] as const },

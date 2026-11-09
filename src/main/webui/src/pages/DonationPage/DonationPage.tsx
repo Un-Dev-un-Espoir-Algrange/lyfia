@@ -2,9 +2,13 @@ import React from "react";
 import PageHero from "../../components/organisms/PageHero/PageHero";
 import ButtonLink from "../../components/atoms/ButtonLink/ButtonLink";
 import Icon from "../../components/atoms/Icon/Icon";
+import { useAccess } from "../../auth/useAccess";
+import { entry } from "../../auth/access";
 import styles from "./DonationPage.module.css";
 
-export const DonationPage: React.FC = () => (
+export const DonationPage: React.FC = () => {
+  const { canAccess } = useAccess();
+  return (
   <>
     <PageHero eyebrow="Nous soutenir" title="Faire un don" />
     <div className="container">
@@ -33,11 +37,15 @@ export const DonationPage: React.FC = () => (
             Vous représentez une entreprise et souhaitez soutenir nos actions ? Contactez-nous pour échanger sur les
             modalités de mécénat.
           </p>
-          <ButtonLink to="/contact" label="Nous contacter" variant="accent" arrow />
+          <div className={styles.cardActions}>
+            <ButtonLink to="/contact" label="Nous contacter" variant="accent" arrow />
+            {canAccess("mecenes") && <ButtonLink to={entry("mecenes").path} label="Voir nos mécènes" variant="outline" />}
+          </div>
         </aside>
       </div>
     </div>
   </>
-);
+  );
+};
 
 export default DonationPage;

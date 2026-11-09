@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Carousel, { CarouselSlide } from "../../components/organisms/Carousel/Carousel";
 import EventList from "../../components/organisms/EventList/EventList";
+import MecenesBanner from "../../components/organisms/MecenesBanner/MecenesBanner";
 import SectionHeading from "../../components/molecules/SectionHeading/SectionHeading";
 import ButtonLink from "../../components/atoms/ButtonLink/ButtonLink";
 import Icon, { IconName } from "../../components/atoms/Icon/Icon";
@@ -186,6 +187,8 @@ export const HomePage: React.FC = () => {
         </div>
       </div>
     </section>
+
+    <MecenesBanner />
   </>
   );
 };

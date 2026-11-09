@@ -9,5 +9,6 @@ export const mockFeatureFlags: FeatureFlag[] = [
   { name: "depot-medias", description: "Permettre au Bureau de déposer des images dans la médiathèque.", isActive: true },
   { name: "demandes-fonctionnalite", description: "Permettre au Bureau de demander des fonctionnalités.", isActive: true },
   { name: "inscription-site", description: "Permettre aux visiteurs de créer leur compte sur le site.", isActive: true },
+  { name: "mecenes", description: "Montrer les mécènes au public : la page Nos mécènes et le bandeau de l'accueil.", isActive: true, perSecteur: true, offSectors: [] },
   { name: "export-liste", description: "Permettre au Bureau de télécharger la liste des inscrits d'un événement.", isActive: true, perSecteur: true, offSectors: [] },
 ];

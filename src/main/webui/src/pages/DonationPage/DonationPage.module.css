@@ -62,3 +62,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cardActions a {
+  margin-top: 0;
+}
