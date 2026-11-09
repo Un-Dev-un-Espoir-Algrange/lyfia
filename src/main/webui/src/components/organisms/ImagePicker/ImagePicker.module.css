@@ -37,6 +37,18 @@
   display: block;
 }
 
+/* Un logo, entier sur fond blanc, comme sur Nos mécènes */
+.logo {
+  aspect-ratio: 3 / 2;
+  max-width: 360px;
+  padding: 24px;
+  background: #fff;
+}
+
+.logo img {
+  object-fit: contain;
+}
+
 .none {
   font-size: var(--text-sm);
   color: var(--color-muted);

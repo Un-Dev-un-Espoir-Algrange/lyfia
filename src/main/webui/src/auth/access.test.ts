@@ -74,6 +74,10 @@ describe("access map", () => {
     const groups = mainNav(ctx("admin"));
     const association = groups.find((g) => g.kind === "menu" && g.label === "Association");
     expect(association && association.kind === "menu" && ids(association.entries)).toEqual(["about", "news", "gallery", "contact"]);
+    const soutenir = mainNav(ctx("visiteur")).find((g) => g.kind === "menu" && g.label === "Soutenir");
+    expect(soutenir && soutenir.kind === "menu" && ids(soutenir.entries)).toEqual(["donation", "mecenes", "volunteer"]);
+    const sansMecenes = mainNav(ctx("visiteur", ["mecenes"])).find((g) => g.kind === "menu" && g.label === "Soutenir");
+    expect(sansMecenes && sansMecenes.kind === "menu" && ids(sansMecenes.entries)).toEqual(["donation", "volunteer"]);
   });
 
   it("lists section tabs by role", () => {
@@ -92,6 +96,7 @@ describe("access map", () => {
       "adminEvents",
       "adminPosts",
       "adminCarousel",
+      "adminMecenes",
       "adminMedias",
     ]);
   });

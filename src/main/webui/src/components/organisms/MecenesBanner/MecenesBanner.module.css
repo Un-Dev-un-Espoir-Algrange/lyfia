@@ -1,0 +1,95 @@
+.banner {
+  padding: clamp(40px, 5vw, 64px) 0;
+  background: var(--color-bg-soft);
+  border-top: 1px solid var(--color-border);
+}
+
+.title {
+  margin: 0 0 28px;
+  padding: 0 24px;
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+/* Les logos s'estompent aux deux bords */
+.viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: defile calc(var(--count) * 4s) linear infinite;
+}
+
+.viewport:hover .track,
+.track:focus-within {
+  animation-play-state: paused;
+}
+
+/* Le gap entre les deux moitiés compte dans la moitié à faire défiler */
+@keyframes defile {
+  to {
+    transform: translateX(calc(-50% - 12px));
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 168px;
+  text-decoration: none;
+  color: var(--color-heading);
+}
+
+.item:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.logo {
+  transition: box-shadow var(--duration) var(--ease-out);
+}
+
+.item:hover .logo {
+  box-shadow: inset 0 0 0 1px var(--color-border-strong), var(--shadow-md);
+}
+
+.name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+/* Immobile pour qui demande moins d'animations : les logos se rangent, sans doublons */
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    mask-image: none;
+  }
+
+  .track {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    padding: 0 24px;
+    animation: none;
+  }
+
+  .track > [aria-hidden="true"] {
+    display: none;
+  }
+}
