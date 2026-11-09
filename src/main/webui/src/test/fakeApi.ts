@@ -19,6 +19,7 @@ import { mockMedias } from "./fixtures/medias";
 import { Media } from "../features/medias/types";
 import { mockCarouselItems } from "./fixtures/carousel";
 import { CarouselItem } from "../features/carousel/types";
+import { Mecene } from "../features/mecenes/types";
 import { mockFeatureFlags } from "./fixtures/featureFlags";
 import { FeatureFlag, JournalEntry } from "../features/featureFlags/types";
 import { mockFeatureRequests } from "./fixtures/featureRequests";
@@ -64,6 +65,7 @@ interface State {
   /** Les Photos de la Galerie, avec leur Visibilité et qui les a déposées. */
   galerie: (GalleryPhoto & { visibilite: Visibilite; depositedBy: string; proposition: boolean })[];
   carousel: CarouselItem[];
+  mecenes: Mecene[];
   features: FeatureFlag[];
   /** Le Journal, les plus récentes d'abord. */
   journal: JournalEntry[];
@@ -98,6 +100,7 @@ export function resetFakeApi() {
     medias: structuredClone(mockMedias),
     galerie: [],
     carousel: structuredClone(mockCarouselItems),
+    mecenes: [],
     features: structuredClone(mockFeatureFlags),
     journal: [],
     devPersonas: true,
@@ -176,6 +179,7 @@ async function handle(input: RequestInfo | URL, init: RequestInit = {}): Promise
   if (parts[0] === "api" && parts[1] === "medias") return medias(method, parts.slice(2), body);
   if (parts[0] === "api" && parts[1] === "galerie") return galerie(method, parts.slice(2), body, url.searchParams);
   if (parts[0] === "api" && parts[1] === "carousel") return carousel(method, parts.slice(2), body, url.searchParams);
+  if (parts[0] === "api" && parts[1] === "mecenes") return mecenes(method, parts[2], body, url.searchParams);
   if (parts[0] === "api" && parts[1] === "configurations") return configurations(method, parts[2], body);
   if (parts[0] === "api" && parts[1] === "posts") return posts(method, parts.slice(2), body, url.searchParams);
   if (parts[0] === "api" && parts[1] === "dev" && parts[2] === "persona") {
@@ -783,6 +787,49 @@ function carousel(method: string, [id, action, direction]: string[], body: any, 
     const other = items[direction === "up" ? index - 1 : index + 1];
     if (other) [item.order, other.order] = [other.order, item.order];
     return json(ordered().filter((i) => manages(i.sectorId)));
+  }
+  return empty(405);
+}
+
+/** Ajoute un Mécène tel quel ; renvoie son id. */
+export function seedMecene(mecene: Partial<Mecene> & Pick<Mecene, "name" | "sectorId">): string {
+  const id = `mecene-${++seeded}`;
+  const sectorName = state.sectors.find((s) => s.sectorId === mecene.sectorId)?.name ?? "Secteur";
+  state.mecenes.push({ id, niveau: "or", annee: 2026, description: null, website: null, mediaId: null, shown: true, sectorName, ...mecene });
+  return id;
+}
+
+/** Comme MeceneController : le public voit, pour chaque Secteur, les Mécènes affichés de sa dernière Année. */
+function mecenes(method: string, id: string | undefined, body: any, query: URLSearchParams): Response {
+  const isBureau = roleAtLeast(state.viewer.role, "bureau");
+  if (method === "GET" && !isBureau && !isOn("mecenes")) return featureOff("mecenes");
+  if (!id) {
+    if (method === "GET") {
+      if (query.get("managed") === "true" && isBureau) return json(state.mecenes.filter((m) => manages(m.sectorId)));
+      const shown = state.mecenes.filter((m) => m.shown && (isBureau || isOn("mecenes", m.sectorId)));
+      const latest = (sectorId: string) => Math.max(...shown.filter((m) => m.sectorId === sectorId).map((m) => m.annee));
+      return json(shown.filter((m) => m.annee === latest(m.sectorId)));
+    }
+    if (method !== "POST") return empty(405);
+    if (!isBureau) return empty(403);
+    const sectorId = isSuperAdmin() ? body.sectorId : state.viewer.sectorId;
+    if (!sectorId) return empty(400);
+    const sectorName = state.sectors.find((s) => s.sectorId === sectorId)?.name ?? "Secteur";
+    const mecene: Mecene = { ...body, id: `mecene-new-${state.mecenes.length + 1}`, sectorId, sectorName };
+    state.mecenes.push(mecene);
+    return json(mecene);
+  }
+  if (!isBureau) return empty(403);
+  const mecene = state.mecenes.find((m) => m.id === id);
+  if (!mecene) return empty(404);
+  if (!manages(mecene.sectorId)) return empty(403);
+  if (method === "PUT") {
+    Object.assign(mecene, { ...body, sectorId: mecene.sectorId, sectorName: mecene.sectorName });
+    return json(mecene);
+  }
+  if (method === "DELETE") {
+    state.mecenes = state.mecenes.filter((m) => m.id !== id);
+    return empty(204);
   }
   return empty(405);
 }

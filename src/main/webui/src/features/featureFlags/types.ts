@@ -11,6 +11,7 @@ export type FeatureName =
   | "depot-medias"
   | "demandes-fonctionnalite"
   | "export-liste"
+  | "mecenes"
   | "inscription-site";
 
 /** Ce que chaque Fonctionnalité laisse faire, pour la page Fonctionnalités et les messages de suspension. */
@@ -23,6 +24,7 @@ export const FEATURE_LABELS: Record<FeatureName, string> = {
   "depot-medias": "Dépôt de médias",
   "demandes-fonctionnalite": "Demandes de fonctionnalité",
   "export-liste": "Export de la liste",
+  mecenes: "Mécènes",
   "inscription-site": "Inscription sur le site",
 };
 

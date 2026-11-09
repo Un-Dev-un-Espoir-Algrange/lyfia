@@ -19,6 +19,7 @@ public enum FeatureEnum {
     DEPOT_MEDIAS("depot-medias", false),
     DEMANDES_FONCTIONNALITE("demandes-fonctionnalite", false),
     EXPORT_LISTE("export-liste", true),
+    MECENES("mecenes", true),
     /** Also opens or closes Keycloak's registration form, where people register. */
     INSCRIPTION_SITE("inscription-site", false);
 

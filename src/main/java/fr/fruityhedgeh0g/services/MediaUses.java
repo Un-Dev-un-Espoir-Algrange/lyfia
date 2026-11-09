@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Where the site uses an image: a Post's banner or photos, a slide of the carousel, an Event's image, the logo. Only
+ * Where the site uses an image: a Post's banner or photos, a slide of the carousel, an Event's image, a Mécène's
+ * logo, the site's logo. Only
  * a Publique Photo de la Galerie can be used there, since all of these are public; while it is, it can be neither
  * made less visible nor deleted.
  */
@@ -48,6 +49,7 @@ public class MediaUses {
         titles("select p.title from PostEntity p join p.attachments a where a.mediaId = ?1", mediaId).forEach(t -> uses.add("Photos de l'actualité « " + t + " »"));
         titles("select c.title from CarouselItemEntity c where c.media.mediaId = ?1", mediaId).forEach(t -> uses.add("Carrousel « " + t + " »"));
         titles("select e.name from EventEntity e where e.media.mediaId = ?1", mediaId).forEach(t -> uses.add("Événement « " + t + " »"));
+        titles("select m.name from MeceneEntity m where m.media.mediaId = ?1", mediaId).forEach(t -> uses.add("Mécène « " + t + " »"));
         if (!entityManager.createQuery("select c.name from ConfigurationEntity c where c.name = ?1 and c.value = ?2", String.class)
                 .setParameter(1, NAVBAR_LOGO).setParameter(2, mediaId.toString()).getResultList().isEmpty())
             uses.add("Logo du site");
